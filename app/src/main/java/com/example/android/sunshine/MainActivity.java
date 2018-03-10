@@ -25,6 +25,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,6 +36,8 @@ import android.widget.ProgressBar;
 import com.example.android.sunshine.data.SunshinePreferences;
 import com.example.android.sunshine.data.WeatherContract;
 import com.example.android.sunshine.sync.SunshineSyncUtils;
+import com.example.android.sunshine.utilities.SimpleItemTouchHelperCallBack;
+
 
 public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
@@ -85,6 +88,8 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forecast);
         getSupportActionBar().setElevation(0f);
+
+
 
         /*
          * Using findViewById, we get a reference to our RecyclerView from xml. This allows us to
@@ -142,6 +147,8 @@ public class MainActivity extends AppCompatActivity implements
         /* Setting the adapter attaches it to the RecyclerView in our layout. */
         mRecyclerView.setAdapter(mForecastAdapter);
 
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SimpleItemTouchHelperCallBack(mForecastAdapter));
+        itemTouchHelper.attachToRecyclerView(mRecyclerView);
 
         showLoading();
 
@@ -255,6 +262,7 @@ public class MainActivity extends AppCompatActivity implements
          * displaying the data.
          */
         mForecastAdapter.swapCursor(null);
+
     }
 
     /**
@@ -343,4 +351,6 @@ public class MainActivity extends AppCompatActivity implements
 
         return super.onOptionsItemSelected(item);
     }
+
+    public class ItemTouchHelperCallBack{}
 }
